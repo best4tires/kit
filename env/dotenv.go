@@ -11,7 +11,7 @@ import (
 
 func unquote(s string) string {
 	if (strings.HasPrefix(s, `"`) && strings.HasSuffix(s, `"`)) ||
-		strings.HasPrefix(s, `'`) && strings.HasSuffix(s, `'`) {
+		(strings.HasPrefix(s, `'`) && strings.HasSuffix(s, `'`)) {
 		return s[1 : len(s)-1]
 	}
 	return s
