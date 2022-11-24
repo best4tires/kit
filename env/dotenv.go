@@ -9,14 +9,6 @@ import (
 	"github.com/BurntSushi/toml"
 )
 
-func unquote(s string) string {
-	if (strings.HasPrefix(s, `"`) && strings.HasSuffix(s, `"`)) ||
-		(strings.HasPrefix(s, `'`) && strings.HasSuffix(s, `'`)) {
-		return s[1 : len(s)-1]
-	}
-	return s
-}
-
 func loadDotenv(path string) (map[string]any, error) {
 	vs := map[string]any{}
 	f, err := os.Open(path)
