@@ -1,7 +1,9 @@
 package srv
 
 const (
-	HeaderContentType = "Content-Type"
+	HeaderContentType     = "Content-Type"
+	HeaderAccept          = "Accept"
+	HeaderContentEncoding = "Content-Encoding"
 )
 
 const (

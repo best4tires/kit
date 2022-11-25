@@ -13,7 +13,7 @@ type Server struct {
 	server   *http.Server
 }
 
-func NewServer(bind string) (*Server, error) {
+func New(bind string) (*Server, error) {
 	l, err := net.Listen("tcp", bind)
 	if err != nil {
 		return nil, fmt.Errorf("listen-tcp on %q: %w", bind, err)

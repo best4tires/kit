@@ -65,7 +65,7 @@ func (e *RuntimeEnvironment) run(svcs ...Service) (err error) {
 
 	//server
 	bind := fmt.Sprintf(":%s", httpPort)
-	server, err := srv.NewServer(bind)
+	server, err := srv.New(bind)
 	if err != nil {
 		return fmt.Errorf("new-server on %q: %w", bind, err)
 	}
