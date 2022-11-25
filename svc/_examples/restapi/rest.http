@@ -1,0 +1,14 @@
+
+GET http://127.0.0.1:8080/api/fooapi/foos/
+
+###
+
+GET http://127.0.0.1:8080/api/fooapi/foos/004
+
+###
+
+GET http://127.0.0.1:8080/api/fooapi/foos/qwertz
+
+###
+
+GET http://127.0.0.1:8080/api/fooapi/foos/003

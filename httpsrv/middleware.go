@@ -18,7 +18,7 @@ func Logging() func(http.Handler) http.Handler {
 			sw := NewStatusWriter(w)
 			t0 := time.Now()
 			next.ServeHTTP(sw, r)
-			log.Infof("ACCESS: %s host=%q path=%q query=%q => status %d (%s) in %s",
+			log.Accessf("%s host=%q path=%q query=%q => status %d (%s) in %s",
 				r.Method, r.Host, r.URL.Path, r.URL.RawQuery, sw.statusCode, http.StatusText(sw.statusCode), time.Since(t0))
 		})
 	}

@@ -21,6 +21,7 @@ const (
 type Service interface {
 	Route(router *httpsrv.PrefixRouter)
 	RunCtx(ctx context.Context, env env.Env) error
+	Shutdown()
 }
 
 func NewRuntimeEnvironment(name string) *RuntimeEnvironment {
@@ -73,6 +74,7 @@ func (e *RuntimeEnvironment) run(svcs ...Service) (err error) {
 		httpsrv.Recovery(),
 		httpsrv.Logging(),
 	)
+	log.Infof("listen to %q", server.Addr().String())
 	go server.Run(handler)
 
 	// run services
@@ -106,5 +108,10 @@ func (e *RuntimeEnvironment) run(svcs ...Service) (err error) {
 	case <-waitC:
 	case <-time.After(5 * time.Second):
 	}
+
+	for _, svc := range svcs {
+		svc.Shutdown()
+	}
+
 	return nil
 }
