@@ -9,8 +9,8 @@ import (
 	"time"
 
 	"github.com/best4tires/kit/env"
-	"github.com/best4tires/kit/httpsrv"
 	"github.com/best4tires/kit/log"
+	"github.com/best4tires/kit/srv"
 )
 
 const (
@@ -19,7 +19,7 @@ const (
 )
 
 type Service interface {
-	Route(router *httpsrv.PrefixRouter)
+	Route(router *srv.PrefixRouter)
 	RunCtx(ctx context.Context, env env.Env) error
 	Shutdown()
 }
@@ -58,21 +58,21 @@ func (e *RuntimeEnvironment) run(svcs ...Service) (err error) {
 	httpPrefix := env.StringWithTagOrDefault(envKeyHttpPrefix, e.name, fmt.Sprintf("/api/%s/", e.name))
 
 	//router
-	router := httpsrv.NewRouter().WithPrefix(httpPrefix)
+	router := srv.NewRouter().WithPrefix(httpPrefix)
 	for _, svc := range svcs {
 		svc.Route(router)
 	}
 
 	//server
 	bind := fmt.Sprintf(":%s", httpPort)
-	server, err := httpsrv.NewServer(bind)
+	server, err := srv.NewServer(bind)
 	if err != nil {
 		return fmt.Errorf("new-server on %q: %w", bind, err)
 	}
 	handler := router.Handler(
-		httpsrv.GZIP(),
-		httpsrv.Recovery(),
-		httpsrv.Logging(),
+		srv.GZIP(),
+		srv.Recovery(),
+		srv.Logging(),
 	)
 	log.Infof("listen to %q", server.Addr().String())
 	go server.Run(handler)

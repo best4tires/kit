@@ -8,9 +8,9 @@ import (
 
 	"github.com/best4tires/kit/env"
 	"github.com/best4tires/kit/errs"
-	"github.com/best4tires/kit/httpsrv"
 	"github.com/best4tires/kit/log"
 	"github.com/best4tires/kit/maps"
+	"github.com/best4tires/kit/srv"
 	"github.com/best4tires/kit/svc"
 )
 
@@ -76,7 +76,7 @@ func NewService(fooCount int) *Service {
 	}
 }
 
-func (s *Service) Route(router *httpsrv.PrefixRouter) {
+func (s *Service) Route(router *srv.PrefixRouter) {
 	router.GET("foos/", s.handleGETFoos)
 	router.GET("foos/{id}", s.handleGETFoo)
 }
@@ -96,15 +96,15 @@ func (s *Service) handleGETFoos(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "internal error", http.StatusInternalServerError)
 		return
 	}
-	httpsrv.WriteJSON(w, http.StatusOK, foos)
+	srv.WriteJSON(w, http.StatusOK, foos)
 }
 
 func (s *Service) handleGETFoo(w http.ResponseWriter, r *http.Request) {
-	id := httpsrv.Var(r, "id")
+	id := srv.Var(r, "id")
 	v, err := s.repo.Find(id)
 	switch {
 	case err == nil:
-		httpsrv.WriteJSON(w, http.StatusOK, v)
+		srv.WriteJSON(w, http.StatusOK, v)
 	case errors.Is(err, errs.NotFound()):
 		http.Error(w, fmt.Sprintf("no such foo %q", id), http.StatusNotFound)
 	default:

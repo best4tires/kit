@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/best4tires/kit/env"
-	"github.com/best4tires/kit/httpsrv"
 	"github.com/best4tires/kit/log"
+	"github.com/best4tires/kit/srv"
 	"github.com/best4tires/kit/svc"
 )
 
@@ -23,7 +23,7 @@ func NewService() *Service {
 	return &Service{}
 }
 
-func (s *Service) Route(router *httpsrv.PrefixRouter) {}
+func (s *Service) Route(router *srv.PrefixRouter) {}
 
 func (s *Service) Shutdown() {}
 
