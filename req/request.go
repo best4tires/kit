@@ -9,17 +9,22 @@ import (
 	"github.com/best4tires/kit/srv"
 )
 
-func GetJSON[T any](clt *http.Client, url string) (T, error) {
+type Header struct {
+	Key   string
+	Value string
+}
+
+func GetJSON[T any](clt *http.Client, url string, headers ...Header) (T, error) {
 	var t T
 	r, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {
 		return t, fmt.Errorf("new-request %q: %w", url, err)
 	}
 	r.Header.Add(srv.HeaderAccept, srv.ContentTypeJSONUTF8)
-	return doJSON[T](clt, r)
+	return doJSON[T](clt, r, headers...)
 }
 
-func PostJSON[T any](clt *http.Client, url string, data any) (T, error) {
+func PostJSON[T any](clt *http.Client, url string, data any, headers ...Header) (T, error) {
 	var t T
 	buf := &bytes.Buffer{}
 	err := json.NewEncoder(buf).Encode(data)
@@ -32,10 +37,14 @@ func PostJSON[T any](clt *http.Client, url string, data any) (T, error) {
 	}
 	r.Header.Add(srv.HeaderContentType, srv.ContentTypeJSONUTF8)
 	r.Header.Add(srv.HeaderAccept, srv.ContentTypeJSONUTF8)
-	return doJSON[T](clt, r)
+	return doJSON[T](clt, r, headers...)
 }
 
-func doJSON[T any](clt *http.Client, r *http.Request) (T, error) {
+func doJSON[T any](clt *http.Client, r *http.Request, headers ...Header) (T, error) {
+	for _, h := range headers {
+		r.Header.Add(h.Key, h.Value)
+	}
+
 	var t T
 	resp, err := clt.Do(r)
 	if err != nil {
