@@ -162,6 +162,21 @@ func (r *PrefixRouter) POST(pattern string, handle http.HandlerFunc, options ...
 	r.router.POST(r.prefix+pattern, handle, options...)
 }
 
+// PUT registers a PUT handler
+func (r *PrefixRouter) PUT(pattern string, handle http.HandlerFunc, options ...interface{}) {
+	r.router.PUT(r.prefix+pattern, handle, options...)
+}
+
+// DELETE registers a DELETE handler
+func (r *PrefixRouter) DELETE(pattern string, handle http.HandlerFunc, options ...interface{}) {
+	r.router.DELETE(r.prefix+pattern, handle, options...)
+}
+
+// HEAD registers a HEAD handler
+func (r *PrefixRouter) HEAD(pattern string, handle http.HandlerFunc, options ...interface{}) {
+	r.router.HEAD(r.prefix+pattern, handle, options...)
+}
+
 // PrefixGET registers a GET handler, which matches all routes with the given prefix
 func (r *PrefixRouter) PrefixGET(prefix string, handle http.HandlerFunc, options ...interface{}) {
 	r.router.PrefixGET(r.prefix+prefix, handle, options...)
