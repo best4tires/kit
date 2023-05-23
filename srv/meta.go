@@ -33,6 +33,17 @@ func (o SortOrder) String() string {
 	return string(o)
 }
 
+func (o SortOrder) IfLess(less bool) bool {
+	switch o {
+	case SortASC:
+		return less
+	case SortDESC:
+		return !less
+	default:
+		return less
+	}
+}
+
 type SortField struct {
 	Name  string `json:"name"`
 	Label string `json:"label"`
