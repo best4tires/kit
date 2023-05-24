@@ -12,6 +12,11 @@ func Query[T any](ts []T, meta srv.Meta) []T {
 	//filter
 	qts = Filter(qts, meta.Filters)
 	// limit offset
+	if meta.Skip > len(qts) {
+		ts := []T{}
+		return ts
+	}
+
 	if meta.Skip > 0 {
 		qts = qts[meta.Skip:]
 	}
