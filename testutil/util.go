@@ -17,5 +17,12 @@ func AssertNoErr(t *testing.T, err error, msg string, args ...any) {
 	if err == nil {
 		return
 	}
-	t.Fatalf("%s: %v", fmt.Sprintf(msg, args...), err)
+	t.Fatalf("assert-no-err: %s: %v", fmt.Sprintf(msg, args...), err)
+}
+
+func AssertErr(t *testing.T, err error, msg string, args ...any) {
+	if err != nil {
+		return
+	}
+	t.Fatalf("assert-err: %s: %v", fmt.Sprintf(msg, args...), err)
 }
