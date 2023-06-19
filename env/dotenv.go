@@ -85,7 +85,11 @@ func LoadDotenv() map[string]any {
 		if vs, err := loadDotenvToml(filepath.Join(currDir, dotEnvFileToml)); err == nil {
 			merge(vs, all)
 		}
-		dirSl = dirSl[:len(dirSl)-1]
+
+		if len(dirSl) > 0 {
+			dirSl = dirSl[:len(dirSl)-1]
+		}
+
 		if len(dirSl) == 0 {
 			//done
 			break
