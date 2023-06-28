@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"os"
 	"strings"
+
+	"github.com/best4tires/kit/convert"
 )
 
 // merge merges "from" env into "to" env, keeping already existing values
@@ -114,9 +116,26 @@ func (env Env) String(key string) (string, bool) {
 	return fmt.Sprintf("%v", s), true
 }
 
+// Int returns the int-value for the passed key if exists, otherwise, false
+func (env Env) Int(key string) (int, bool) {
+	v, ok := env[key]
+	if !ok {
+		return 0, false
+	}
+	return convert.ToInt(v)
+}
+
 // StringOrDefault first tries to lookup the passed key, otherwise return def
 func (env Env) StringOrDefault(key string, def string) string {
 	if v, ok := env.String(key); ok {
+		return v
+	}
+	return def
+}
+
+// IntOrDefault first tries to lookup the passed key, otherwise return def
+func (env Env) IntOrDefault(key string, def int) int {
+	if v, ok := env.Int(key); ok {
 		return v
 	}
 	return def
