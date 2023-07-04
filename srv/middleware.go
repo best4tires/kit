@@ -2,6 +2,7 @@ package srv
 
 import (
 	"net/http"
+	"net/http/httputil"
 	"time"
 
 	"github.com/best4tires/kit/log"
@@ -12,7 +13,7 @@ func GZIP() func(http.Handler) http.Handler {
 	return handlers.CompressHandler
 }
 
-func Logging() func(http.Handler) http.Handler {
+func Logging(dumpRequest bool) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			sw := NewStatusWriter(w)
@@ -20,6 +21,11 @@ func Logging() func(http.Handler) http.Handler {
 			next.ServeHTTP(sw, r)
 			log.Accessf("%s host=%q path=%q query=%q => status %d (%s) in %s",
 				r.Method, r.Host, r.URL.Path, r.URL.RawQuery, sw.statusCode, http.StatusText(sw.statusCode), time.Since(t0))
+
+			if dumpRequest {
+				bs, _ := httputil.DumpRequest(r, true)
+				log.Accessf("request:\n%s", string(bs))
+			}
 		})
 	}
 }
