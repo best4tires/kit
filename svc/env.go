@@ -72,7 +72,7 @@ func (e *RuntimeEnvironment) run(svcs ...Service) (err error) {
 	handler := router.Handler(
 		srv.GZIP(),
 		srv.Recovery(),
-		srv.Logging(),
+		srv.Logging(false),
 	)
 	log.Infof("listen to %q", server.Addr().String())
 	go server.Run(handler)
