@@ -7,22 +7,25 @@ import (
 )
 
 func AssertEqual(t *testing.T, want, have any) {
-	if reflect.DeepEqual(want, have) {
-		return
+	t.Helper()
+
+	if !reflect.DeepEqual(want, have) {
+		t.Errorf("want %v, have %v", want, have)
 	}
-	t.Fatalf("want %v, have %v", want, have)
 }
 
 func AssertNoErr(t *testing.T, err error, msg string, args ...any) {
-	if err == nil {
-		return
+	t.Helper()
+
+	if err != nil {
+		t.Errorf("assert-no-err: %s: %v", fmt.Sprintf(msg, args...), err)
 	}
-	t.Fatalf("assert-no-err: %s: %v", fmt.Sprintf(msg, args...), err)
 }
 
 func AssertErr(t *testing.T, err error, msg string, args ...any) {
-	if err != nil {
-		return
+	t.Helper()
+
+	if err == nil {
+		t.Errorf("assert-err: %s: %v", fmt.Sprintf(msg, args...), err)
 	}
-	t.Fatalf("assert-err: %s: %v", fmt.Sprintf(msg, args...), err)
 }
